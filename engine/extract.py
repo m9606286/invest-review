@@ -5,6 +5,8 @@ import re
 from . import related_party as RP
 from .chunker import HYP
 
+HYP_RE = re.compile("|".join(map(re.escape, HYP)))
+
 GRADE_RANK = {"正式文件": 0, "一般文件": 1, "簡報/宣稱": 2, "口頭/未證實": 3}
 UNIT_MULT = {"億": 1e8, "百萬": 1e6, "萬": 1e4, "千": 1e3, "仟": 1e3, "": 1}
 NUM = r"-?\d[\d,]*\.?\d*"
@@ -89,7 +91,7 @@ def extract(chunks, basic=None, roster_result=None, user_facts=None):
                             cands[key].append({"value": nums[-1], "chunk": c, "hyp": False, "rank": rank, "period": "最近期欄"})
         for s in _sents(c["text"]):
             if c["is_table"]: continue
-            hyp = bool(HYP.search(s))
+            hyp = bool(HYP_RE.search(s))
             for key, pat in SCALARS:
                 m = re.search(pat + rf"[^\d\-]{{0,14}}({NUM}\s*(?:億|百萬|萬|千|仟)\s*(?:元|圓)?|{NUM}\s*(?:元|圓))(?!\s*%)", s)
                 if m:
@@ -104,7 +106,7 @@ def extract(chunks, basic=None, roster_result=None, user_facts=None):
                 if re.search(pat, s):
                     if key in CLAUSE_KEYS:       # 退出/競爭：只取含關鍵字的子句，避免夾帶同句其他預測
                         val = "，".join(x for x in _clauses(s) if re.search(pat, x))[:200]
-                        h = bool(HYP.search(val))
+                        h = bool(HYP_RE.search(val))
                     else:
                         val, h = s[:240], hyp
                     cands[key].append({"value": val, "chunk": c, "hyp": h, "rank": rank})
