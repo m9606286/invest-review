@@ -3,3 +3,5 @@ pandas
 PyYAML
 jsonschema
 google-genai
+pdfplumber
+openpyxl
