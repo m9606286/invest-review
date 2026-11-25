@@ -10,7 +10,8 @@ import pdfplumber
 from google import genai
 from google.genai import types
 
-LOW_CONF_KEYWORDS = ("據稱", "口頭", "預計", "尚未確認", "初估", "草案", "擬", "待確認")
+HYP = ("據稱", "口頭", "預計", "尚未確認", "初估", "草案", "擬", "待確認")
+LOW_CONF_KEYWORDS = HYP
 DEFAULT_OCR_MODEL = os.environ.get("GEMINI_OCR_MODEL", "gemini-3-flash-preview")
 
 
@@ -30,7 +31,7 @@ def _detect_domain(text: str) -> list[str]:
 def _assess_confidence(text: str, source_file: str, is_ocr: bool = False) -> tuple[bool, list[str], str]:
     warnings = []
     low = False
-    matched = [w for w in LOW_CONF_KEYWORDS if w in text]
+    matched = [w for w in HYP if w in text]
     if matched:
         low = True
         warnings.append(f"含不確定/口頭用語：{ '、'.join(matched[:4]) }")
