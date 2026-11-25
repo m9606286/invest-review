@@ -7,7 +7,7 @@ HYP = ("據稱", "口頭", "預計", "尚未確認", "初估", "草案", "擬", 
 
 HYP_RE = re.compile("|".join(map(re.escape, HYP)))
 
-GRADE_RANK = {"正式文件": 0, "一般文件": 1, "簡報/宣稱": 2, "口頭/未證實": 3}
+GRADE_RANK = {"正式文件": 0, "一般文件": 1, "B級（結構化/文字檔）": 1, "C級（OCR/一般文件）": 1, "簡報/宣稱": 2, "口頭/未證實": 3}
 UNIT_MULT = {"億": 1e8, "百萬": 1e6, "萬": 1e4, "千": 1e3, "仟": 1e3, "": 1}
 NUM = r"-?\d[\d,]*\.?\d*"
 
@@ -110,7 +110,7 @@ def extract(chunks, basic=None, roster_result=None, user_facts=None):
                     else:
                         val, h = s[:240], hyp
                     cands[key].append({"value": val, "chunk": c, "hyp": h, "rank": rank})
-        if re.search(r"合約|契約|協議書|SPA|投資協議", c["source_file"] + (c["heading"] or "")) and c["evidence_grade"] in ("正式文件", "一般文件"):
+        if re.search(r"合約|契約|協議書|SPA|投資協議", c["source_file"] + (c["heading"] or "")) and c["evidence_grade"] in ("正式文件", "一般文件", "B級（結構化/文字檔）", "C級（OCR/一般文件）"):
             cands["legal.main_contract_draft"].append({"value": f"契約文件：{c['source_file']}", "chunk": c, "hyp": False, "rank": GRADE_RANK[c["evidence_grade"]]})
 
     facts, log, n = {}, [], 0
