@@ -1,0 +1,29 @@
+number_tolerance_pct: 1.0   # 跨 Agent / 跨文件同一數字的相對差異容忍值
+max_follow_up_rounds: 1   # 補問輪次上限（預設1，避免無限迴圈；缺口仍在則列入補件清單並出報告）
+stance_divergence_gap: 2    # 投資/財務/法務結論等級相差 >= 此值→黃燈（支持0 有條件1 保留2 反對3）
+critical_fields:
+  financial:
+    - financial.revenue_history
+    - financial.net_income_history
+    - financial.operating_cash_flow_history
+    - financial.interest_bearing_debt
+    - financial.total_debt
+    - financial.total_assets
+    - financial.investment_amount
+    - financial.installment_structure
+    - financial.funding_source
+    - financial.valuation_basis
+    - financial.return_base
+    - financial.return_conservative
+  legal:
+    - legal.shareholding_structure
+    - legal.control_voting_arrangement
+    - legal.related_party_disclosure
+    - legal.main_contract_draft
+  authority_inputs:
+    - portfolio.concentration_pct
+noncritical_fields:
+  - market.competitive_landscape
+  - market.peer_benchmark_return
+  - investment.exit_path
+  - financial.return_optimistic

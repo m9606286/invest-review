@@ -1,0 +1,10 @@
+# ⚠️ 佔位值：請換成貴公司實際授權/風控門檻後，再把 version 改掉（案件的 authority_ref 必須一致）
+version: "PLACEHOLDER-0"
+currency: "TWD"
+max_single_amount: 100000000        # 單案出資上限
+max_debt_ratio: 0.70                # 總負債 / 總資產 上限
+max_concentration_pct: 20           # 本案占投資組合比重上限(%)
+min_base_return_pct: 8              # 基準情境最低回報(%)，低於→紅燈(R4)
+min_conservative_return_pct: 3      # 保守情境最低回報(%)，低於→黃燈
+base_over_benchmark_margin_pct: 5   # 基準回報高於同業基準超過此幅度→黃燈(過度樂觀)
+material_transaction_threshold_ntd: 30000000  # 寶碩處理程序（使用者提供）：3000萬以上提報董事會；未達者上簽董事長

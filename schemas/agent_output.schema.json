@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentOutput",
+  "type": "object",
+  "required": ["agent", "case_id", "version", "status", "core_judgement", "top_risks", "missing_info", "claims", "conditions_proposed", "questions_for_human"],
+  "properties": {
+    "agent": {"enum": ["investment", "finance", "legal", "audit"]},
+    "case_id": {"type": "string"},
+    "version": {"type": "integer", "minimum": 1},
+    "status": {"enum": ["完成", "失敗", "降級"]},
+    "core_judgement": {
+      "type": "object",
+      "required": ["stance", "summary", "confidence"],
+      "properties": {
+        "stance": {"enum": ["支持", "有條件", "保留", "反對"]},
+        "summary": {"type": "string", "minLength": 1},
+        "confidence": {"enum": ["高", "中", "低"]}
+      }
+    },
+    "top_risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["concern_id", "description", "severity", "category", "evidence_refs"],
+        "properties": {
+          "concern_id": {"type": "string"},
+          "description": {"type": "string"},
+          "severity": {"enum": ["高", "中", "低"]},
+          "category": {"enum": ["合規", "財務", "營運", "市場", "治理", "其他"]},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "missing_info": {
+      "type": "array",
+      "items": {"type": "object", "required": ["item", "why_critical", "affects", "ask_who"],
+        "properties": {"item": {"type": "string"}, "why_critical": {"type": "string"}, "affects": {"type": "string"}, "ask_who": {"type": "string"}}}
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "label", "evidence_refs"],
+        "properties": {
+          "claim": {"type": "string"},
+          "label": {"enum": ["明載", "推論", "缺漏"]},
+          "inferred_by": {"type": ["string", "null"], "description": "label=推論 時必填，填 Agent 名稱"},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}},
+          "numbers_used": {
+            "type": "array",
+            "items": {"type": "object", "required": ["fact_id", "key", "value"],
+              "properties": {"fact_id": {"type": "string"}, "key": {"type": "string"}, "value": {}}}
+          }
+        }
+      }
+    },
+    "conditions_proposed": {"type": "array", "items": {"type": "string"}},
+    "questions_for_human": {"type": "array", "items": {"type": "string"}, "maxItems": 3},
+    "specific": {"type": "object", "description": "各 Agent 專屬欄位（投資:核心假設；財務:三情境；法務:控制權/條款；稽核:contradictions 等）"},
+    "ai_recommendation": {"enum": ["推進", "有條件推進", "暫緩"], "description": "僅稽核 Agent 使用"}
+  },
+  "if": {"properties": {"agent": {"const": "audit"}}, "required": ["agent"]},
+  "then": {"required": ["ai_recommendation"]}
+}

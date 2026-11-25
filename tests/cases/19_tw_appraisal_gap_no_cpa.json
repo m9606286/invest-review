@@ -1,0 +1,420 @@
+{
+  "name": "19_tw_appraisal_gap_no_cpa",
+  "description": "估價18億/20億 vs 交易2.5億 差距≥20%，缺會計師意見",
+  "case": {
+    "case_id": "CASE-T",
+    "version": 1,
+    "submitted_by": "tester",
+    "submitted_at": "2026-11-24",
+    "authority_ref": "PLACEHOLDER-0",
+    "basic": {
+      "name": "測試案",
+      "deal_type": "入股",
+      "amount": 80000000,
+      "currency": "TWD"
+    },
+    "documents": [
+      {
+        "doc_id": "doc1",
+        "doc_type": "財報",
+        "filename": "fs.pdf"
+      }
+    ],
+    "facts_provided": {
+      "financial.revenue_history": {
+        "fact_id": "F01",
+        "value": [
+          100,
+          120,
+          150
+        ],
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.net_income_history": {
+        "fact_id": "F02",
+        "value": [
+          10,
+          14,
+          20
+        ],
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.operating_cash_flow_history": {
+        "fact_id": "F03",
+        "value": [
+          8,
+          12,
+          18
+        ],
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.interest_bearing_debt": {
+        "fact_id": "F04",
+        "value": 200000000,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.total_debt": {
+        "fact_id": "F05",
+        "value": 300000000,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.total_assets": {
+        "fact_id": "F06",
+        "value": 1000000000,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.investment_amount": {
+        "fact_id": "F07",
+        "value": 250000000,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.installment_structure": {
+        "fact_id": "F08",
+        "value": "分兩期，簽約30%/交割70%",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.funding_source": {
+        "fact_id": "F09",
+        "value": "自有資金",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.valuation_basis": {
+        "fact_id": "F10",
+        "value": "EV/EBITDA 8x",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.return_base": {
+        "fact_id": "F11",
+        "value": 12,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.return_conservative": {
+        "fact_id": "F12",
+        "value": 5,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "financial.return_optimistic": {
+        "fact_id": "F13",
+        "value": 18,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "legal.shareholding_structure": {
+        "fact_id": "F14",
+        "value": "創辦人60%/本公司20%/其他20%",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "legal.control_voting_arrangement": {
+        "fact_id": "F15",
+        "value": "董事會5席，本公司1席",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "legal.related_party_disclosure": {
+        "fact_id": "F16",
+        "value": {
+          "exists": false,
+          "disclosed": true,
+          "procedure_ok": true
+        },
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "legal.main_contract_draft": {
+        "fact_id": "F17",
+        "value": "SPA 草案 v3",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "portfolio.concentration_pct": {
+        "fact_id": "F18",
+        "value": 10,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "market.competitive_landscape": {
+        "fact_id": "F19",
+        "value": "前三大占55%",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "market.peer_benchmark_return": {
+        "fact_id": "F20",
+        "value": 10,
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "investment.exit_path": {
+        "fact_id": "F21",
+        "value": "5年後IPO或回購",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "tw.asset_type": {
+        "fact_id": "T01",
+        "value": "不動產",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "tw.direction": {
+        "fact_id": "T02",
+        "value": "取得",
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "tw.counterparty": {
+        "fact_id": "T03",
+        "value": {
+          "is_related": false,
+          "substantive_checked": true,
+          "is_domestic_gov": false,
+          "is_group_internal": false
+        },
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "tw.procedures": {
+        "fact_id": "T04",
+        "value": {
+          "target_fs_reviewed": "已具備",
+          "cpa_price_opinion": "已具備",
+          "appraisal_report": "已具備",
+          "expert_independence": "已具備",
+          "board_approval": "已具備",
+          "audit_committee_approval": "已具備",
+          "independent_director_minutes": "已具備",
+          "related_pack": "已具備",
+          "related_valuation_or_cpa": "已具備",
+          "shareholder_approval": "已具備",
+          "related_cost_cpa_review": "已具備",
+          "merger_expert_opinion": "已具備"
+        },
+        "label": "明載",
+        "source": "doc1#p3"
+      },
+      "tw.appraisals": {
+        "fact_id": "T06",
+        "value": {
+          "values": [
+            180000000,
+            200000000
+          ],
+          "report_date": "2026-10-01",
+          "contract_date": "2026-11-20"
+        },
+        "label": "明載",
+        "source": "doc1#p3"
+      }
+    }
+  },
+  "agents": {
+    "investment": {
+      "agent": "investment",
+      "case_id": "CASE-T",
+      "version": 1,
+      "status": "完成",
+      "core_judgement": {
+        "stance": "支持",
+        "summary": "investment 結論摘要",
+        "confidence": "中"
+      },
+      "top_risks": [
+        {
+          "concern_id": "investment-R1",
+          "description": "一般營運風險",
+          "severity": "中",
+          "category": "營運",
+          "evidence_refs": [
+            "doc1#p5"
+          ]
+        }
+      ],
+      "missing_info": [],
+      "claims": [
+        {
+          "claim": "出資金額如附件所載",
+          "label": "明載",
+          "evidence_refs": [
+            "doc1#p3"
+          ],
+          "numbers_used": [
+            {
+              "fact_id": "F07",
+              "key": "financial.investment_amount",
+              "value": 250000000
+            }
+          ]
+        }
+      ],
+      "conditions_proposed": [],
+      "questions_for_human": []
+    },
+    "finance": {
+      "agent": "finance",
+      "case_id": "CASE-T",
+      "version": 1,
+      "status": "完成",
+      "core_judgement": {
+        "stance": "支持",
+        "summary": "finance 結論摘要",
+        "confidence": "中"
+      },
+      "top_risks": [
+        {
+          "concern_id": "finance-R1",
+          "description": "一般營運風險",
+          "severity": "中",
+          "category": "營運",
+          "evidence_refs": [
+            "doc1#p5"
+          ]
+        }
+      ],
+      "missing_info": [],
+      "claims": [
+        {
+          "claim": "出資金額如附件所載",
+          "label": "明載",
+          "evidence_refs": [
+            "doc1#p3"
+          ],
+          "numbers_used": [
+            {
+              "fact_id": "F07",
+              "key": "financial.investment_amount",
+              "value": 250000000
+            }
+          ]
+        }
+      ],
+      "conditions_proposed": [],
+      "questions_for_human": []
+    },
+    "legal": {
+      "agent": "legal",
+      "case_id": "CASE-T",
+      "version": 1,
+      "status": "完成",
+      "core_judgement": {
+        "stance": "支持",
+        "summary": "legal 結論摘要",
+        "confidence": "中"
+      },
+      "top_risks": [
+        {
+          "concern_id": "legal-R1",
+          "description": "一般營運風險",
+          "severity": "中",
+          "category": "營運",
+          "evidence_refs": [
+            "doc1#p5"
+          ]
+        }
+      ],
+      "missing_info": [],
+      "claims": [
+        {
+          "claim": "出資金額如附件所載",
+          "label": "明載",
+          "evidence_refs": [
+            "doc1#p3"
+          ],
+          "numbers_used": [
+            {
+              "fact_id": "F07",
+              "key": "financial.investment_amount",
+              "value": 250000000
+            }
+          ]
+        }
+      ],
+      "conditions_proposed": [],
+      "questions_for_human": []
+    },
+    "audit": {
+      "agent": "audit",
+      "case_id": "CASE-T",
+      "version": 1,
+      "status": "完成",
+      "core_judgement": {
+        "stance": "支持",
+        "summary": "audit 結論摘要",
+        "confidence": "中"
+      },
+      "top_risks": [
+        {
+          "concern_id": "audit-R1",
+          "description": "一般營運風險",
+          "severity": "中",
+          "category": "營運",
+          "evidence_refs": [
+            "doc1#p5"
+          ]
+        }
+      ],
+      "missing_info": [],
+      "claims": [
+        {
+          "claim": "出資金額如附件所載",
+          "label": "明載",
+          "evidence_refs": [
+            "doc1#p3"
+          ],
+          "numbers_used": [
+            {
+              "fact_id": "F07",
+              "key": "financial.investment_amount",
+              "value": 250000000
+            }
+          ]
+        }
+      ],
+      "conditions_proposed": [],
+      "questions_for_human": [],
+      "ai_recommendation": "推進"
+    }
+  },
+  "review_state": {
+    "rounds_used": 0,
+    "unresolved_critical_gaps": []
+  },
+  "company": {
+    "name": "寶碩(測試用假資料，非真實數字)",
+    "is_public_offering": true,
+    "paid_in_capital": 1000000000,
+    "par_value": 10,
+    "parent_equity": 2000000000,
+    "total_assets": 3000000000,
+    "has_audit_committee": true,
+    "has_independent_directors": true,
+    "is_professional_investor": false,
+    "total_assets_basis": "個體"
+  },
+  "authority_override": {
+    "max_single_amount": 5000000000
+  },
+  "expect": {
+    "rule_light": "紅",
+    "final_light": "紅",
+    "rules": [
+      "R9"
+    ],
+    "missing": [],
+    "tw_unmet": [
+      "cpa_opinion_appraisal_gap"
+    ]
+  }
+}

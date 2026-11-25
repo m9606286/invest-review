@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CasePackage",
+  "description": "只驗證『結構』。關鍵欄位是否齊全由規則引擎 R1 判定（缺漏要變紅燈，而不是 schema 拒收）。",
+  "type": "object",
+  "required": ["case_id", "version", "submitted_by", "submitted_at", "basic", "documents", "facts_provided", "authority_ref"],
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 1},
+    "prev_version_ref": {"type": ["string", "null"]},
+    "submitted_by": {"type": "string"},
+    "submitted_at": {"type": "string"},
+    "authority_ref": {"type": "string", "description": "適用的授權/風控門檻版本，須與 config/authority.yaml 的 version 一致"},
+    "basic": {
+      "type": "object",
+      "required": ["name", "deal_type", "amount", "currency"],
+      "properties": {
+        "name": {"type": "string"},
+        "deal_type": {"type": "string"},
+        "amount": {"type": "number"},
+        "currency": {"type": "string"},
+        "expected_timeline": {"type": ["string", "null"]}
+      }
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["doc_id", "doc_type", "filename"],
+        "properties": {"doc_id": {"type": "string"}, "doc_type": {"type": "string"}, "filename": {"type": "string"}, "date": {"type": ["string", "null"]}}
+      }
+    },
+    "facts_provided": {
+      "type": "object",
+      "description": "事實登記表(Fact Registry)。key 為點號欄位名，例如 financial.total_debt",
+      "additionalProperties": {"$ref": "#/$defs/fact"}
+    }
+  },
+  "if": {"properties": {"version": {"minimum": 2}}, "required": ["version"]},
+  "then": {"required": ["prev_version_ref"], "properties": {"prev_version_ref": {"type": "string", "minLength": 1}}},
+  "$defs": {
+    "fact": {
+      "type": "object",
+      "required": ["fact_id", "value", "label"],
+      "properties": {
+        "fact_id": {"type": "string", "minLength": 1},
+        "value": {},
+        "unit": {"type": ["string", "null"]},
+        "source": {"type": ["string", "null"], "description": "檔名/頁/段落，例如 doc1#p3"},
+        "label": {"enum": ["明載", "推論", "缺漏"]},
+        "inferred_by": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

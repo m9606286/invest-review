@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Chunk",
+  "type": "object",
+  "required": ["chunk_id", "doc_id", "source_file", "location", "text", "is_table", "char_count", "domain_tags", "evidence_grade", "nature", "low_confidence", "warnings"],
+  "properties": {
+    "chunk_id": {"type": "string", "pattern": "^C[0-9]{3,}$"},
+    "doc_id": {"type": "string"},
+    "source_file": {"type": "string"},
+    "location": {"type": "string", "description": "頁碼/工作表/章節標題/段落序號，例如 p3｜§三、財務概況｜段2-4"},
+    "heading": {"type": ["string", "null"]},
+    "text": {"type": "string", "minLength": 1},
+    "is_table": {"type": "boolean"},
+    "char_count": {"type": "integer"},
+    "domain_tags": {"type": "array", "items": {"enum": ["投資", "財務", "法務", "稽核"]}},
+    "evidence_grade": {"enum": ["正式文件", "一般文件", "簡報/宣稱", "口頭/未證實"], "description": "正式文件＝財報/合約/登記資料/判決裁定等；簡報/宣稱、口頭/未證實不得當作已落實事實"},
+    "nature": {"enum": ["事實", "假設/預測", "宣稱"]},
+    "low_confidence": {"type": "boolean"},
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  }
+}
