@@ -59,16 +59,42 @@ with st.container(border=True):
     files = u1.file_uploader("上傳檔案（可多檔：.txt .md .csv .xlsx .docx .pdf）", accept_multiple_files=True, key="files")
     pasted = u2.text_area("或直接貼上文字（簡報重點、會議紀錄、條款摘錄…）", height=120, key="paste", placeholder="貼上的文字會被視為『一般文件』，含『據稱/口頭/預計』等用語者會自動降低可信度")
     reuse = st.checkbox("沿用上一版的全部原始資料（補件時勾選，v2 = v1 資料 + 本次新增）", value=existing and bool(vers), disabled=not (existing and vers))
-    m1, m2, m3 = st.columns([2, 2, 1])
-    mode = m1.radio("分析引擎", ["示範模式（腳本模擬，非真實分析）", "真實 LLM（需 API key）"], horizontal=True, key="mode")
-    api_key = m2.text_input("ANTHROPIC_API_KEY（僅真實模式；留空則讀環境變數）", type="password", key="apikey")
-    go = m3.button("開始切片分析", type="primary", width="stretch", key="go")
+
+    m1, m2 = st.columns([2, 3])
+    mode = m1.radio(
+        "分析引擎",
+        ["示範模式（腳本模擬）", "Gemini 免費額度", "OpenAI 相容免費 API", "Anthropic（需付費）"],
+        horizontal=False,
+        key="mode",
+    )
+    with m2:
+        if mode == "Gemini 免費額度":
+            api_key = st.text_input("GEMINI_API_KEY（留空則讀環境變數）", type="password", key="gemini_key")
+            gemini_model = st.text_input("Gemini 模型", value="gemini-3-flash-preview", key="gemini_model")
+        elif mode == "OpenAI 相容免費 API":
+            compat_url = st.text_input("Base URL", value="https://openrouter.ai/api/v1", key="compat_url")
+            api_key = st.text_input("API Key（留空則讀環境變數）", type="password", key="compat_key")
+            compat_model = st.text_input("模型名稱", value="openrouter/free", key="compat_model")
+        elif mode == "Anthropic（需付費）":
+            api_key = st.text_input("ANTHROPIC_API_KEY（留空則讀環境變數）", type="password", key="anthropic_key")
+        else:
+            api_key = ""
+            st.caption("示範模式不需要 API Key，可直接按「開始切片分析」測試流程。")
+
+    go = st.button("開始切片分析", type="primary", width="stretch", key="go")
 
 
 def pick_llm():
     if mode.startswith("示範"):
         from mock import ScriptedLLM, behavior_default
         return ScriptedLLM(behavior_default)
+    if mode.startswith("Gemini"):
+        from engine.llm import GeminiLLM
+        m_name = (gemini_model or "gemini-3-flash-preview").strip()
+        return GeminiLLM(api_key=api_key or None, models=[m_name, m_name])
+    if mode.startswith("OpenAI"):
+        from engine.llm import OpenAICompatLLM
+        return OpenAICompatLLM(api_key=api_key or None, base_url=compat_url or None, model=compat_model or None)
     from engine.llm import AnthropicLLM
     return AnthropicLLM(api_key=api_key or None)
 
@@ -110,7 +136,7 @@ if go:
                     st.session_state["res"] = {"case": case, "chunks": chunks, "out": out, "extraction": ex, "mode": mode}
                     status.update(label="分析完成", state="complete")
     except Exception as e:
-        st.error(f"【{stage}】發生錯誤：{type(e).__name__}: {e}　— 受影響環節：{stage}；其餘頁面功能不受影響，可修正後重試。")
+        st.error(f"【{stage}】發生錯誤：{type(e).__name__}: {e} — 受影響環節：{stage}；其餘頁面功能不受影響，可修正後重試。")
 
 res = st.session_state.get("res")
 if not res:
@@ -217,5 +243,5 @@ else:
             for c in shown:
                 flag = "⚠ " if c["low_confidence"] else ""
                 with st.expander(f"{flag}{c['chunk_id']}｜{c['source_file']}｜{c['location']}｜{c['evidence_grade']}｜{'/'.join(c['domain_tags'])}"):
-                    st.caption(f"性質：{c['nature']}　低可信度：{'是' if c['low_confidence'] else '否'}　警示：{'；'.join(c['warnings']) or '無'}")
+                    st.caption(f"性質：{c['nature']} 低可信度：{'是' if c['low_confidence'] else '否'} 警示：{'；'.join(c['warnings']) or '無'}")
                     st.text(c["text"])
