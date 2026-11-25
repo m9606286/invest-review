@@ -7,8 +7,6 @@ from pathlib import Path
 
 import pandas as pd
 import pdfplumber
-from google import genai
-from google.genai import types
 
 HYP = ("據稱", "口頭", "預計", "尚未確認", "初估", "草案", "擬", "待確認")
 LOW_CONF_KEYWORDS = HYP
@@ -47,6 +45,11 @@ def _ocr_pdf_with_gemini(pdf_bytes: bytes, filename: str) -> str:
     api_key = (os.environ.get("GEMINI_API_KEY") or "").strip()
     if not api_key:
         raise RuntimeError("未設定 GEMINI_API_KEY，無法進行掃描 PDF OCR")
+    try:
+        from google import genai
+        from google.genai import types
+    except ImportError as e:
+        raise RuntimeError("Gemini OCR 需要安裝 google-genai，請重新部署依賴後再試") from e
     client = genai.Client(api_key=api_key)
     prompt = (
         f"請完整辨識並轉錄這份掃描 PDF（檔名：{filename}）的所有文字、標題、表格與數字。"
