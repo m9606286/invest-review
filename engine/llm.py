@@ -3,8 +3,6 @@ import json
 import os
 import urllib.request
 
-from google import genai
-from google.genai import types
 
 
 class LLMError(Exception):
@@ -21,6 +19,12 @@ class GeminiLLM:
         self.models = models or [primary, backup]
         self.max_tokens = max_tokens
         self.timeout = timeout
+        try:
+            from google import genai
+            from google.genai import types
+        except ImportError as e:
+            raise LLMError("Gemini 模式需要安裝 google-genai，請重新部署依賴後再試") from e
+        self._types = types
         self.client = genai.Client(api_key=self.api_key)
 
     def complete(self, system, user, model):
@@ -28,7 +32,7 @@ class GeminiLLM:
             resp = self.client.models.generate_content(
                 model=model,
                 contents=user,
-                config=types.GenerateContentConfig(
+                config=self._types.GenerateContentConfig(
                     system_instruction=system,
                     temperature=0,
                     max_output_tokens=self.max_tokens,
