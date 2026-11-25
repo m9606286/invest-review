@@ -3,7 +3,7 @@
 跨切片同一欄位出現不同數字，保留最高等級者並把其他值放進 alt_values（規則引擎 R2 會據此紅燈）。"""
 import re
 from . import related_party as RP
-from .chunker import HYP
+HYP = ("據稱", "口頭", "預計", "尚未確認", "初估", "草案", "擬", "待確認")
 
 HYP_RE = re.compile("|".join(map(re.escape, HYP)))
 
